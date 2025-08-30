@@ -85,9 +85,14 @@ export default function ElementRenderer({ el, isSelected, onSelect, onDragEnd, o
         y={el.y}
         text={el.text}
         fontSize={el.fontSize || 18}
-        fontStyle={`${el.bold ? 'bold' : ''} ${el.italic ? 'italic' : ''}`}
-        fill={el.color}
+        fontFamily="Inter"
+        fontStyle={el.fontStyle || 'normal'}
+        fontWeight={el.fontWeight || 'normal'}
+        fill={el.fill}
+        width={el.width}
+        height={el.height}
         onDragEnd={(e) => onDragEnd(el.id, e)}
+        onTransformEnd={(e) => onTransformEnd(el.id, e)}
       />
     )
   }

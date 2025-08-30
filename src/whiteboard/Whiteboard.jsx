@@ -114,7 +114,9 @@ export default function Whiteboard({ activeTool, color, strokeWidth, showGrid, d
         y: pos.y,
         text: 'Double-click to edit',
         fontSize: 18,
-        color
+        fontWeight: 'normal',
+        fontStyle: 'normal',
+        fill: color
       }
       setElements(prev => [...prev, t])
       setSelectedId(id)
@@ -227,7 +229,9 @@ export default function Whiteboard({ activeTool, color, strokeWidth, showGrid, d
           ...el,
           x: node.x(),
           y: node.y(),
-          fontSize: Math.max(8, el.fontSize * scaleY)
+          fontSize: Math.max(8, el.fontSize * scaleY),
+          width: node.width() * scaleX, // Update width based on scaleX
+          height: node.height() * scaleY // Update height based on scaleY
         }
       } else if (el.type === 'line') {
         // We don't handle complex transform for line here
@@ -247,8 +251,8 @@ export default function Whiteboard({ activeTool, color, strokeWidth, showGrid, d
     }
   }
 
-  const confirmTextEdit = (text) => {
-    setElements(prev => prev.map(el => el.id === editingTextId ? { ...el, text } : el))
+  const confirmTextEdit = ({ text, fontSize, fontWeight, fontStyle, fill }) => {
+    setElements(prev => prev.map(el => el.id === editingTextId ? { ...el, text, fontSize, fontWeight, fontStyle, fill } : el))
     setEditingTextId(null)
   }
   const cancelTextEdit = () => setEditingTextId(null)
@@ -352,12 +356,6 @@ export default function Whiteboard({ activeTool, color, strokeWidth, showGrid, d
           onCancel={cancelTextEdit}
         />
       )}
-
-      {/* small action buttons */}
-      <div className="absolute right-4 bottom-4 flex gap-2">
-        <button className="px-3 py-2 rounded shadow bg-white dark:bg-gray-800" onClick={exportPNG}>Export PNG</button>
-        <button className="px-3 py-2 rounded shadow bg-white dark:bg-gray-800" onClick={exportJSON}>Export JSON</button>
-      </div>
     </div>
   )
 }
